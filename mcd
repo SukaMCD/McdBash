@@ -1,0 +1,113 @@
+#!/bin/bash
+
+# --- Styling (Ultra Premium Palette) ---
+BOLD='\033[1m'
+ITALIC='\033[3m'
+CYAN='\033[38;5;51m'
+PINK='\033[38;5;198m'
+ORANGE='\033[38;5;208m'
+YELLOW='\033[38;5;226m'
+RED='\033[38;5;196m'
+GRAY='\033[38;5;244m'
+NC='\033[0m' # No Color
+
+# Path ke folder scripts
+SCRIPT_DIR="/opt/mcd/scripts"
+VERSION="1.2.0"
+
+# --- Fungsi Cek Status Laravel ---
+check_laravel() {
+    if [[ -f "artisan" ]]; then
+        echo -e "${GRAY}Status: ${GREEN}●${GRAY} Laravel Project Detected${NC}"
+    else
+        echo -e "${GRAY}Status: ${RED}○${GRAY} Not in Laravel Project${NC}"
+    fi
+}
+
+# --- Fungsi Menu Bantuan ---
+show_help() {
+    clear
+    echo -e "${PINK}${BOLD}"
+    echo -e "  __  __         _ ____            _     "
+    echo -e " |  \/  |       | |  _ \          | |    "
+    echo -e " | \  / | ___ __| | |_) | __ _ ___| |__  "
+    echo -e " | |\/| |/ __/ _\` |  _ < / _\` / __| '_ \\ "
+    echo -e " | |  | | (_| (_| | |_) | (_| \\__ \\ | | |"
+    echo -e " |_|  |_|\\___\\__,_|____/ \\__,_|___/_| |_|"
+    echo -e " ${NC}${GRAY}v$VERSION${NC} ${ITALIC}${GRAY}by SukaMCD${NC}"
+    echo -e ""
+    check_laravel
+    echo -e "${GRAY}───────────────────────────────────────────────────${NC}"
+
+    echo -e "${BOLD}MAIN COMMANDS${NC}"
+    printf "  ${CYAN}%-12s${NC} %s\n" "-laravel" "Create a new high-end Laravel project"
+    printf "  ${CYAN}%-12s${NC} %s\n" "-dev"     "Run Serve & Vite simultaneously"
+    printf "  ${CYAN}%-12s${NC} %s\n" "-optim"   "Flush cache & rebuild optimization"
+    printf "  ${CYAN}%-12s${NC} %s\n" "-env"   "Switch between Local & Production env"
+    printf "  ${CYAN}%-12s${NC} %s\n" "-log"     "Monitor laravel.log in real-time"
+    
+    echo -e "\n${BOLD}UTILITIES${NC}"
+    printf "  ${GRAY}%-12s${NC} %s\n" "-v"       "Show CLI version"
+    printf "  ${GRAY}%-12s${NC} %s\n" "-h"       "Show this help menu"
+
+    echo -e "\n${GRAY}───────────────────────────────────────────────────${NC}"
+    echo -e "${ORANGE}${BOLD}Usage:${NC} mcd ${CYAN}[option]${NC}"
+}
+
+# --- Logika Utama ---
+case "$1" in
+    -laravel)
+        if [[ -f "$SCRIPT_DIR/mcdlaravel.sh" ]]; then
+            bash "$SCRIPT_DIR/mcdlaravel.sh"
+        else
+            echo -e "\n${RED}${BOLD}󰅙 Error:${NC} Module ${BOLD}mcdlaravel.sh${NC} not found in $SCRIPT_DIR"
+            exit 1
+        fi
+        ;;
+
+    -optim)
+        if [[ -f "$SCRIPT_DIR/mcdoptim.sh" ]]; then
+            bash "$SCRIPT_DIR/mcdoptim.sh"
+        else
+            echo -e "${RED}❌ Module mcdoptim.sh not found.${NC}"
+        fi
+        ;;
+
+    -dev)
+        if [[ -f "$SCRIPT_DIR/mcddev.sh" ]]; then
+            bash "$SCRIPT_DIR/mcddev.sh"
+        else
+            echo -e "${RED}❌ Module mcddev.sh not found.${NC}"
+        fi
+        ;;
+
+    -env)
+        if [[ -f "$SCRIPT_DIR/mcdenv.sh" ]]; then
+            bash "$SCRIPT_DIR/mcdenv.sh"
+        else
+            echo -e "${RED}❌ Module mcdenv.sh not found.${NC}"
+        fi
+        ;;
+
+    -log)
+        if [[ -f "artisan" ]]; then
+            bash "$SCRIPT_DIR/mcdlog.sh"
+        else
+            echo -e "${RED}${BOLD}❌ Error: Kamu harus berada di root Laravel untuk melihat log!${NC}"
+        fi
+        ;;
+
+    -v|--version)
+        echo -e "${PINK}${BOLD}McdBash${NC} version ${CYAN}$VERSION${NC} ${GRAY}(Arch-Linux Compatible)${NC}"
+        ;;
+
+    -h|--help|"")
+        show_help
+        ;;
+
+    *)
+        echo -e "\n${RED}${BOLD}󰀦 Unknown Command:${NC} '$1'"
+        echo -e "Try ${YELLOW}mcd -h${NC} to see available options."
+        exit 1
+        ;;
+esac
