@@ -107,14 +107,10 @@ case "$1" in
         ;;
 
     -update)
-        echo -e "${CYAN}${BOLD}🔄 Checking for updates...${NC}"
-        cd "$ROOT_DIR" || exit
-        if [ -d ".git" ]; then
-            git pull origin main
-            chmod +x mcd setup.sh scripts/*.sh
-            echo -e "\n${GREEN}${BOLD}✔ Update Berhasil!${NC}"
+        if [[ -f "$SCRIPT_DIR/mcdupdate.sh" ]]; then
+            bash "$SCRIPT_DIR/mcdupdate.sh"
         else
-            echo -e "${RED}${BOLD}❌ Error:${NC} Folder ini bukan git repository. Silakan update manual."
+            echo -e "${RED}❌ Module mcdupdate.sh not found in $SCRIPT_DIR${NC}"
         fi
         ;;
 
